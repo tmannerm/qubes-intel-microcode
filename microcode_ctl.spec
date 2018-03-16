@@ -1,3 +1,7 @@
+%if 0%{?qubes_builder}
+%define _sourcedir %(pwd)
+%endif
+
 %define upstream_version 2.1-16
 %global debug_package %{nil}
 
@@ -8,7 +12,7 @@ Release:        22.qubes1%{?dist}
 Epoch:          2
 License:        GPLv2+ and Redistributable, no modification permitted
 URL:            https://pagure.io/microcode_ctl
-Source0:        https://releases.pagure.org/microcode_ctl/%{name}-%{upstream_version}.tar.xz
+Source0:        %{name}-%{upstream_version}.tar.xz
 ExclusiveArch:  %{ix86} x86_64
 
 %description
