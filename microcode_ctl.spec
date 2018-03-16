@@ -36,6 +36,12 @@ make DESTDIR=%{buildroot} PREFIX=%{_prefix} INSDIR=/usr/sbin install clean
 /lib/firmware/*
 %doc /usr/share/doc/microcode_ctl/*
 
+%post
+dracut -f --kver $(uname -r)
+if [ -d /boot/efi/EFI/qubes ]; then
+    cp /boot/initramfs-$(uname -r).img /boot/efi/EFI/qubes/
+fi
+
 
 %changelog
 * Thu Mar 15 2018 Anton Arapov <aarapov@redhat.com> 2:2.1-22
