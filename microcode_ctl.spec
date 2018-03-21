@@ -37,9 +37,13 @@ make DESTDIR=%{buildroot} PREFIX=%{_prefix} INSDIR=/usr/sbin install clean
 %doc /usr/share/doc/microcode_ctl/*
 
 %post
-dracut -f --kver $(uname -r)
-if [ -d /boot/efi/EFI/qubes ]; then
-    cp /boot/initramfs-$(uname -r).img /boot/efi/EFI/qubes/
+# update initramfs only if was already generated; skip generating it
+# during system installation (will be done later anyway)
+if [ -f /boot/initramfs-$(uname -r).img ]; then
+    dracut -f --kver $(uname -r) /boot/initramfs-$(uname -r).img
+    if [ -d /boot/efi/EFI/qubes ]; then
+        cp /boot/initramfs-$(uname -r).img /boot/efi/EFI/qubes/
+    fi
 fi
 
 
