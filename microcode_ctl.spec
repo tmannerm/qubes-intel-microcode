@@ -46,6 +46,18 @@ if [ -f /boot/initramfs-$(uname -r).img ]; then
     fi
 fi
 
+if [ -f /boot/efi/EFI/qubes/xen.cfg ]; then
+    if ! grep -q ucode=scan /boot/efi/EFI/qubes/xen.cfg; then
+        sed -i -e 's:^options=.*:\0 ucode=scan:' /boot/efi/EFI/qubes/xen.cfg
+    fi
+fi
+
+if [ -f /etc/default/grub ]; then
+    if ! grep -q ucode=scan /etc/default/grub; then
+        echo 'GRUB_CMDLINE_XEN_DEFAULT="$GRUB_CMDLINE_XEN_DEFAULT ucode=scan"' >> /etc/default/grub
+        grub2-mkconfig -o /boot/grub2/grub.cfg
+    fi
+fi
 
 %changelog
 * Thu Mar 15 2018 Anton Arapov <aarapov@redhat.com> 2:2.1-22
