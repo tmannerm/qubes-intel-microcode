@@ -2,17 +2,20 @@
 %define _sourcedir %(pwd)
 %endif
 
-%define upstream_version 2.1-19
+%define upstream_version 2.1-20
+%define microcode_version 20190514
 %global debug_package %{nil}
 
 Summary:        Tool to transform and deploy CPU microcode update for x86
 Name:           microcode_ctl
 Version:        2.1
-Release:        26.qubes1%{?dist}
+Release:        28.qubes1%{?dist}
 Epoch:          2
 License:        GPLv2+ and Redistributable, no modification permitted
 URL:            https://pagure.io/microcode_ctl
-Source0:        %{name}-%{upstream_version}.tar.xz
+Source0:        microcode-%{microcode_version}.tar.gz
+Source1:        Makefile.ucode
+Source2:        README
 ExclusiveArch:  %{ix86} x86_64
 
 %description
@@ -24,10 +27,13 @@ boot i.e. it doesn't reflash your cpu permanently, reboot and it reverts
 back to the old microcode.
 
 %prep
-%setup -q -n %{name}-%{upstream_version}
+%setup -q -c -T -n %{name}-%{upstream_version}
+cp %{SOURCE0} %{SOURCE1} %{SOURCE2} ./
+mv Makefile.ucode Makefile
 
 %build
-make CFLAGS="$RPM_OPT_FLAGS" %{?_smp_mflags}
+make CFLAGS="$RPM_OPT_FLAGS" %{?_smp_mflags} \
+             MICROCODE_INTEL=microcode-%{microcode_version}.tar.gz
 
 %install
 make DESTDIR=%{buildroot} PREFIX=%{_prefix} INSDIR=/usr/sbin install clean
@@ -60,6 +66,15 @@ if [ -f /etc/default/grub ]; then
 fi
 
 %changelog
+* Wed May 15 2019 Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com> 2:2.1-28.qubes1
+- Update to microcode 20190514
+
+* Thu May 09 2019 Anton Arapov <aarapov@redhat.com> 2:2.1-28
+- Update to upstream 2.1-20. 20190312
+
+* Fri Feb 01 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2:2.1-27
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
 * Mon Aug 13 2018 Anton Arapov <aarapov@redhat.com> 2:2.1-26
 - Update to upstream 2.1-19. 20180807
 

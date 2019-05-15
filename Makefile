@@ -10,7 +10,7 @@ UNTRUSTED_SUFF := .UNTRUSTED
 FETCH_CMD := wget --no-use-server-timestamps -q -O
 
 URLS := \
-    https://releases.pagure.org/microcode_ctl/microcode_ctl-2.1-19.tar.xz
+	https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/archive/microcode-20190514.tar.gz
 
 ALL_URLS := $(URLS)
 ALL_FILES := $(notdir $(ALL_URLS))
