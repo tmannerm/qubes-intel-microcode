@@ -10,7 +10,7 @@ UNTRUSTED_SUFF := .UNTRUSTED
 FETCH_CMD := wget --no-use-server-timestamps -q -O
 
 URLS := \
-	https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/archive/microcode-20191112.tar.gz
+	https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/archive/microcode-20200609.tar.gz
 
 ALL_URLS := $(URLS)
 ALL_FILES := $(notdir $(ALL_URLS))
